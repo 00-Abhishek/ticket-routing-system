@@ -1,0 +1,21 @@
+{
+  "rows": 47837,
+  "columns": 2,
+  "duplicate_rows": 0,
+  "missing_documents": 0,
+  "missing_labels": 0,
+  "class_count": 8,
+  "min_class_size": 1760,
+  "max_class_size": 13617,
+  "imbalance_ratio": 7.7369,
+  "avg_raw_length": 291.8812634571566,
+  "median_raw_length": 175.0,
+  "avg_clean_length": 291.8723164078015,
+  "median_clean_length": 175.0,
+  "avg_word_count": 43.597006501243804,
+  "median_word_count": 26.0,
+  "url_rows": 0,
+  "email_rows": 0,
+  "numeric_rows": 0,
+  "very_short_rows": 14
+}

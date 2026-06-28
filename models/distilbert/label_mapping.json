@@ -1,0 +1,22 @@
+{
+  "label2id": {
+    "Access": 0,
+    "Administrative rights": 1,
+    "HR Support": 2,
+    "Hardware": 3,
+    "Internal Project": 4,
+    "Miscellaneous": 5,
+    "Purchase": 6,
+    "Storage": 7
+  },
+  "id2label": {
+    "0": "Access",
+    "1": "Administrative rights",
+    "2": "HR Support",
+    "3": "Hardware",
+    "4": "Internal Project",
+    "5": "Miscellaneous",
+    "6": "Purchase",
+    "7": "Storage"
+  }
+}

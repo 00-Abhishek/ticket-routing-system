@@ -1,0 +1,22 @@
+.git
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+tmp/
+
+data/*.db
+data/*.csv
+all_tickets_processed_improved_v3.csv/
+
+models/distilbert/checkpoint-*/
+
+*.log
+*.tmp
+*.zip
+*.pdf
+*.docx
+~$*.docx
+New folder/

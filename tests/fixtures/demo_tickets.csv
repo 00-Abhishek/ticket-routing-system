@@ -1,0 +1,22 @@
+ticket_text,expected_category
+"Laptop screen is flickering and the monitor is not detected",Hardware
+"Printer is not printing from the finance floor",Hardware
+"Unable to login to Outlook on my laptop",Access
+"Access denied when opening Confluence project space",Access
+"Need admin rights to install Visual Studio on Windows",Administrative rights
+"Please grant local administrator permission for software installation",Administrative rights
+"New starter needs HR portal setup and payroll access",HR Support
+"Employee leave balance is wrong in Oracle",HR Support
+"Need more mailbox storage for shared mailbox",Storage
+"Please create shared folder permissions for the team",Storage
+"Purchase request for new headset and wireless mouse",Purchase
+"Need procurement approval for a new monitor",Purchase
+"Create new internal project code for Oracle migration",Internal Project
+"Please close old project code and create new billing code",Internal Project
+"Expense report is not visible in the application",Miscellaneous
+"Need information request about service desk process",Miscellaneous
+"Production server is down and system unavailable",Hardware
+"Data loss reported on shared drive backup",Storage
+"Need documentation for conference room equipment",Miscellaneous
+"VPN not working for remote user with access card issue",Access
+
