@@ -2,8 +2,8 @@
 
 ## Run Details
 
-- Generated: 2026-06-02T21:06:56
-- Dataset: `D:\DEVELOPMENT\CODEx_PROJECTS\ticket-routing-system\data\all_tickets_processed_improved_v3.csv`
+- Generated: 2026-08-03T13:14:15
+- Dataset: `F:\ticket-routing-system\data\all_tickets_processed_improved_v3.csv`
 - Random seed: 42
 - Split strategy: stratified 80% train, 10% validation, 10% test
 - Shared vectorizer: TF-IDF, unigram + bigram, max 50,000 features, sublinear TF

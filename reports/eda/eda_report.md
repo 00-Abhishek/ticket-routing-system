@@ -2,7 +2,7 @@
 
 ## Dataset
 
-- Path: `D:\DEVELOPMENT\CODEx_PROJECTS\ticket-routing-system\data\all_tickets_processed_improved_v3.csv`
+- Path: `F:\ticket-routing-system\data\all_tickets_processed_improved_v3.csv`
 - Rows: 47,837
 - Columns: 2
 - Target column: `Topic_group`

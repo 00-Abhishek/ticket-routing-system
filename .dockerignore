@@ -1,4 +1,6 @@
 .git
+.gitignore
+.gitattributes
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -6,6 +8,8 @@ __pycache__/
 .venv/
 venv/
 tmp/
+.env.local
+.env.*.local
 
 data/*.db
 data/*.csv
@@ -20,3 +24,10 @@ models/distilbert/checkpoint-*/
 *.docx
 ~$*.docx
 New folder/
+
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

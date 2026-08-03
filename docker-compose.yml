@@ -1,32 +1,55 @@
+version: '3.9'
+
 services:
   backend:
-    build: .
-    command: uvicorn src.api.app:app --host 0.0.0.0 --port 8000
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ticket-backend
+    command: uvicorn src.api.app:app --host 0.0.0.0 --port 8000 --reload
     ports:
-      - "8000:8000"
+      - "${BACKEND_PORT:-8000}:8000"
     volumes:
       - ./data:/app/data
       - ./models:/app/models
       - ./reports:/app/reports
+      - ./src:/app/src  # Enable hot reload during development
+    environment:
+      PYTHONUNBUFFERED: 1
+      LOG_LEVEL: ${LOG_LEVEL:-info}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
+    networks:
+      - app-network
 
   dashboard:
-    build: .
-    command: streamlit run dashboard/app.py --server.address 0.0.0.0 --server.port 8501
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ticket-dashboard
+    command: streamlit run dashboard/app.py --server.address 0.0.0.0 --server.port 8501 --logger.level=${LOG_LEVEL:-info}
     ports:
-      - "8501:8501"
+      - "${DASHBOARD_PORT:-8501}:8501"
     volumes:
       - ./data:/app/data
       - ./models:/app/models
       - ./reports:/app/reports
+      - ./dashboard:/app/dashboard  # Hot reload for dashboard
     environment:
       BACKEND_URL: http://backend:8000
+      PYTHONUNBUFFERED: 1
+      LOG_LEVEL: ${LOG_LEVEL:-info}
     depends_on:
       backend:
         condition: service_healthy
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
