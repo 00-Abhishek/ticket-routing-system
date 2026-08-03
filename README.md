@@ -4,7 +4,7 @@ This repository contains the complete NTCC project implementation for classifyin
 
 # 🌐 Live Demo
 
-Try it out here: [Document RAG Assistant Live Demo](https://00-abhishek-ticket-routing-system-dashboardapp-a3vhvs.streamlit.app/)
+Try it out here: [Automated IT Support Ticket Classification and Routing System](https://00-abhishek-ticket-routing-system-dashboardapp-a3vhvs.streamlit.app/)
 ## Project Overview
 
 The system solves a common IT service-desk problem: large volumes of support tickets arrive as unstructured text, and manual triage is slow, inconsistent, and difficult to scale. This project automates the workflow with:
