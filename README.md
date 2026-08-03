@@ -2,6 +2,9 @@
 
 This repository contains the complete NTCC project implementation for classifying IT support tickets, extracting technical entities, assigning rule-based priority, routing tickets to support teams, persisting analysis history, and exposing the workflow through FastAPI, Streamlit, SQLite, and Docker.
 
+# 🌐 Live Demo
+
+Try it out here: [Document RAG Assistant Live Demo](https://00-abhishek-ticket-routing-system-dashboardapp-a3vhvs.streamlit.app/)
 ## Project Overview
 
 The system solves a common IT service-desk problem: large volumes of support tickets arrive as unstructured text, and manual triage is slow, inconsistent, and difficult to scale. This project automates the workflow with:
