@@ -56,7 +56,17 @@ def api_health(api_url: str) -> bool:
     return data.get("status") == "healthy"
 
 
-def render_analysis_page(api_url: str) -> None:
+def get_embedded_service():
+    """Lazy load direct Python NLP service when FastAPI backend is not running."""
+    try:
+        from src.api.services import get_ticket_analysis_service
+        return get_ticket_analysis_service()
+    except Exception as exc:
+        st.sidebar.warning(f"Embedded engine fallback unavailable: {exc}")
+        return None
+
+
+def render_analysis_page(api_url: str, is_api_online: bool) -> None:
     """Render ticket analysis workflow."""
     st.header("Ticket Analysis")
     demo_ticket = str(st.query_params.get("demo_ticket", ""))
@@ -70,19 +80,34 @@ def render_analysis_page(api_url: str) -> None:
             st.warning("Please enter a ticket before analyzing.")
             return
 
-        try:
-            full_response = call_api("POST", "/analyze", api_url, {"ticket_text": ticket_text})
-            predict_response = call_api("POST", "/predict", api_url, {"ticket_text": ticket_text})
-            entities_response = call_api("POST", "/entities", api_url, {"ticket_text": ticket_text})
-            priority_response = call_api("POST", "/priority", api_url, {"ticket_text": ticket_text})
-        except DashboardAPIError as exc:
-            st.error(compact_error_message(str(exc)))
-            return
+        if is_api_online:
+            try:
+                full_response = call_api("POST", "/analyze", api_url, {"ticket_text": ticket_text})
+                predict_response = call_api("POST", "/predict", api_url, {"ticket_text": ticket_text})
+                entities_response = call_api("POST", "/entities", api_url, {"ticket_text": ticket_text})
+                priority_response = call_api("POST", "/priority", api_url, {"ticket_text": ticket_text})
+            except DashboardAPIError as exc:
+                st.error(compact_error_message(str(exc)))
+                return
 
-        category, confidence = parse_predict_response(predict_response)
-        entities = parse_entities_response(entities_response)
-        priority, matched_rule = parse_priority_response(priority_response)
-        full_priority, full_matched_rule = parse_priority_response(full_response)
+            category, confidence = parse_predict_response(predict_response)
+            entities = parse_entities_response(entities_response)
+            priority, matched_rule = parse_priority_response(priority_response)
+            full_priority, full_matched_rule = parse_priority_response(full_response)
+            assigned_team = str(full_response.get("assigned_team", "Unknown"))
+        else:
+            service = get_embedded_service()
+            if service is None:
+                st.error("FastAPI backend is offline and embedded engine could not be initialized.")
+                return
+            with st.spinner("Analyzing ticket..."):
+                analysis = service.analyze(ticket_text)
+                category = analysis["category"]
+                confidence = float(analysis["confidence"])
+                entities = analysis["entities"]
+                priority = analysis["priority"]
+                matched_rule = analysis["matched_rule"]
+                assigned_team = analysis["assigned_team"]
 
         st.subheader("Prediction")
         render_prediction_panel(category, confidence)
@@ -94,16 +119,7 @@ def render_analysis_page(api_url: str) -> None:
         render_priority_panel(priority, matched_rule)
 
         st.subheader("Routing")
-        render_routing_panel(str(full_response.get("assigned_team", "Unknown")))
-
-        st.subheader("Full Analysis")
-        render_prediction_panel(
-            str(full_response.get("category", "Unknown")),
-            float(full_response.get("confidence", 0.0)),
-        )
-        render_entities_panel(parse_entities_response({"entities": full_response.get("entities", {})}))
-        render_priority_panel(full_priority, full_matched_rule)
-        render_routing_panel(str(full_response.get("assigned_team", "Unknown")))
+        render_routing_panel(assigned_team)
 
 
 def render_analytics_page() -> None:
@@ -139,14 +155,21 @@ def main() -> None:
     st.title("Automated IT Support Ticket NLP")
     api_url = get_api_url()
     st.sidebar.subheader("System Status")
-    render_status(api_health(api_url))
+    is_api_online = api_health(api_url)
+    if is_api_online:
+        render_status(True)
+        st.sidebar.caption("Connected to FastAPI backend")
+    else:
+        st.sidebar.success("🟢 Online (In-App Engine)")
+        st.sidebar.caption("Running direct Python NLP engine")
 
     tab_analysis, tab_analytics = st.tabs(["Analyze Ticket", "Analytics"])
     with tab_analysis:
-        render_analysis_page(api_url)
+        render_analysis_page(api_url, is_api_online)
     with tab_analytics:
         render_analytics_page()
 
 
 if __name__ == "__main__":
     main()
+
